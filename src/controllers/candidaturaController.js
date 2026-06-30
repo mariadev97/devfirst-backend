@@ -66,7 +66,10 @@ export async function candidaturasPorOferta(req, res) {
     }
 
     const candidaturas = await Candidatura.find({ oferta: req.params.ofertaId })
-      .populate("candidato")
+      .populate({
+        path: "candidato",
+        populate: { path: "user", select: "email" },
+      })
       .sort({ createdAt: -1 });
 
     res.json(candidaturas);
