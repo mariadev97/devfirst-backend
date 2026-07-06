@@ -15,6 +15,7 @@ const candidatoProfileSchema = new mongoose.Schema(
     stackTecnologico: [{ type: String, trim: true }],
     ubicacion: { type: String, trim: true },
     disponibilidad: { type: Boolean, default: true },
+    cvUrl: { type: String, default: "" },
   },
   { timestamps: true }
 );
