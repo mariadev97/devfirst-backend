@@ -77,3 +77,43 @@ export async function candidaturasPorOferta(req, res) {
     res.status(500).json({ message: "Error al listar candidaturas.", error: error.message });
   }
 }
+
+// PATCH /api/candidaturas/:id/estado — la empresa cambia el estado de una candidatura
+export async function cambiarEstado(req, res) {
+  try {
+    const { estado } = req.body;
+    const estadosValidos = [
+      "enviada",
+      "en revisión",
+      "entrevista",
+      "rechazada",
+      "aceptada",
+    ];
+
+    if (!estadosValidos.includes(estado)) {
+      return res.status(400).json({ message: "Estado no válido." });
+    }
+
+    // Verificamos que la candidatura pertenece a una oferta de esta empresa
+    const empresaProfile = await EmpresaProfile.findOne({ user: req.user.id });
+    if (!empresaProfile) {
+      return res.status(404).json({ message: "No se encontró tu perfil de empresa." });
+    }
+
+    const candidatura = await Candidatura.findById(req.params.id).populate("oferta");
+    if (!candidatura) {
+      return res.status(404).json({ message: "Candidatura no encontrada." });
+    }
+
+    if (String(candidatura.oferta.empresa) !== String(empresaProfile._id)) {
+      return res.status(403).json({ message: "No tienes permiso para modificar esta candidatura." });
+    }
+
+    candidatura.estado = estado;
+    await candidatura.save();
+
+    res.json(candidatura);
+  } catch (error) {
+    res.status(500).json({ message: "Error al cambiar el estado.", error: error.message });
+  }
+}

@@ -3,6 +3,7 @@ import {
   aplicarOferta,
   misCandidaturas,
   candidaturasPorOferta,
+  cambiarEstado,
 } from "../controllers/candidaturaController.js";
 import { requireAuth, requireRole } from "../middleware/auth.js";
 
@@ -15,6 +16,13 @@ router.get(
   requireAuth,
   requireRole("empresa"),
   candidaturasPorOferta
+);
+
+router.patch(
+  "/:id/estado",
+  requireAuth,
+  requireRole("empresa"),
+  cambiarEstado
 );
 
 export default router;
