@@ -32,3 +32,16 @@ export function requireRole(role) {
     next();
   };
 }
+
+export async function requireAdmin(req, res, next) {
+  try {
+    const User = (await import("../models/User.js")).default;
+    const user = await User.findById(req.user.id);
+    if (!user?.esAdmin) {
+      return res.status(403).json({ message: "Acceso restringido a administradores." });
+    }
+    next();
+  } catch (error) {
+    res.status(500).json({ message: "Error al verificar permisos.", error: error.message });
+  }
+}

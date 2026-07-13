@@ -7,6 +7,7 @@ import authRoutes from "./routes/authRoutes.js";
 import ofertaRoutes from "./routes/ofertaRoutes.js";
 import candidaturaRoutes from "./routes/candidaturaRoutes.js";
 import perfilRoutes from "./routes/perfilRoutes.js";
+import postRoutes from "./routes/postRoutes.js";
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/ofertas", ofertaRoutes);
 app.use("/api/candidaturas", candidaturaRoutes);
 app.use("/api/perfil", perfilRoutes);
+app.use("/api/posts", postRoutes);
 
 // Manejador de rutas no encontradas
 app.use((req, res) => {

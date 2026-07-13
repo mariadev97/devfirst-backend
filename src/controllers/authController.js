@@ -6,7 +6,7 @@ import EmpresaProfile from "../models/EmpresaProfile.js";
 
 function generarToken(user) {
   return jwt.sign(
-    { id: user._id, role: user.role },
+    { id: user._id, role: user.role, esAdmin: user.esAdmin },
     process.env.JWT_SECRET,
     { expiresIn: "7d" }
   );
@@ -50,7 +50,7 @@ export async function register(req, res) {
     const token = generarToken(user);
     res.status(201).json({
       token,
-      user: { id: user._id, email: user.email, role: user.role },
+      user: { id: user._id, email: user.email, role: user.role, esAdmin: user.esAdmin },
     });
   } catch (error) {
     res.status(500).json({ message: "Error al registrar el usuario.", error: error.message });
@@ -79,7 +79,7 @@ export async function login(req, res) {
     const token = generarToken(user);
     res.json({
       token,
-      user: { id: user._id, email: user.email, role: user.role },
+      user: { id: user._id, email: user.email, role: user.role, esAdmin: user.esAdmin },
     });
   } catch (error) {
     res.status(500).json({ message: "Error al iniciar sesión.", error: error.message });

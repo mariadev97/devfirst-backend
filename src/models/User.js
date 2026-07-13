@@ -18,7 +18,9 @@ const userSchema = new mongoose.Schema(
       enum: ["candidato", "empresa"],
       required: true,
     },
+    esAdmin: { type: Boolean, default: false },
   },
+  
   { timestamps: true } // añade createdAt y updatedAt automáticamente
 );
 
